@@ -1,4 +1,4 @@
-const {addCommands} = require("./helpers/setup.helper");
+import hooks from './hooks.conf';
 
 exports.config = {
 
@@ -10,13 +10,7 @@ exports.config = {
         // 'path/to/excluded/files'
     ],
 
-    maxInstances: 1,
 
-    capabilities: [{
-        maxInstances: 1,
-        browserName: 'chrome',
-        acceptInsecureCerts: true
-    }],
 
     logLevel: 'info',
     bail: 0,
@@ -24,18 +18,18 @@ exports.config = {
     waitforTimeout: 10000,
     connectionRetryTimeout: 30000,
     connectionRetryCount: 1,
-    services: ['devtools'],
-    
+    services: ['devtools', 'geckodriver'],
+
     framework: 'mocha',
 
-    reporters: ['spec'],
+    reporters: ['spec', ['allure', {
+        disableWebdriverStepsReporting: true
+    }]],
 
     mochaOpts: {
         ui: 'bdd',
         timeout: 60000
     },
 
-    before: async function(capabilities, specs, browser) {
-       await addCommands();
-    },
+    ...hooks
 }
