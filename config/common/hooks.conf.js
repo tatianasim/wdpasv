@@ -6,10 +6,17 @@ module.exports = {
         await addCommands();
     },
 
-    afterTest: async function (test, context, result) {
-        if (test.failed || result.error) {
+    // afterTest: async function (test, context, result) {
+    //     if (test.failed || result.error) {
+    //         await browser.takeScreenshot();
+    //         allureReporter.addAttachment('URL', await browser.getUrl(), 'text/plain');
+    //     }
+    // }
+
+    afterScenario: async function (world, result){
+        if (!result.passed || world.result.status === 'FAILED') {
             await browser.takeScreenshot();
             allureReporter.addAttachment('URL', await browser.getUrl(), 'text/plain');
-        }
+                }
     }
 };
